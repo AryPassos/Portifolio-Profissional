@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import { TypewriterText } from "./TypewriterText";
 
 export const HeroSection = () => {
@@ -86,24 +87,26 @@ export const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <motion.a
-              href="#portfolio"
-              className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary via-accent to-primary bg-300% animate-gradient-x text-white font-semibold shadow-lg shadow-primary/40 hover:shadow-primary/60 transition-shadow flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Ver Portfólio
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </motion.a>
-            <motion.a
-              href="#contact"
-              className="px-8 py-4 rounded-xl border-2 border-primary/60 bg-primary/10 font-semibold text-foreground hover:bg-primary/20 hover:border-primary transition-all flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Entrar em Contato
-              <Download className="h-5 w-5" />
-            </motion.a>
+            <Link to="/portfolio">
+              <motion.div
+                className="group px-8 py-4 rounded-xl bg-gradient-to-r from-primary via-accent to-primary bg-300% animate-gradient-x text-white font-semibold shadow-lg shadow-primary/40 hover:shadow-primary/60 transition-shadow flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Ver Portfólio
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </motion.div>
+            </Link>
+            <Link to="/contato">
+              <motion.div
+                className="px-8 py-4 rounded-xl border-2 border-primary/60 bg-primary/10 font-semibold text-foreground hover:bg-primary/20 hover:border-primary transition-all flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Entrar em Contato
+                <MessageCircle className="h-5 w-5" />
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
 

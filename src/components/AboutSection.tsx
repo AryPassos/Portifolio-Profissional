@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Target, Wrench, Rocket, Users } from "lucide-react";
+import avatarImage from "@/assets/avatar-ary.png";
 
 const highlights = [
   {
@@ -56,10 +57,12 @@ export const AboutSection = () => {
           >
             <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto">
               <div className="absolute inset-0 bg-gradient-primary rounded-3xl rotate-6 opacity-50" />
-              <div className="absolute inset-0 glass rounded-3xl flex items-center justify-center">
-                <div className="text-8xl md:text-9xl font-bold text-gradient">
-                  AP
-                </div>
+              <div className="absolute inset-0 glass rounded-3xl overflow-hidden">
+                <img
+                  src={avatarImage}
+                  alt="Ary José Passos - Desenvolvedor Front-end"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <motion.div
                 animate={{ rotate: 360 }}
