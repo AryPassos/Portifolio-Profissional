@@ -49,16 +49,21 @@ export const ContactSection = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { name, email, message } = formData;
+    const subject = encodeURIComponent(`Contato do Portfólio - ${name}`);
+    const body = encodeURIComponent(
+      `Nome: ${name}\nEmail: ${email}\n\nMensagem:\n${message}`
+    );
+    
+    window.location.href = `mailto:arypassosj@gmail.com?subject=${subject}&body=${body}`;
 
     toast({
-      title: "Mensagem enviada!",
-      description: "Obrigado pelo contato. Responderei em breve!",
+      title: "Abrindo seu cliente de email...",
+      description: "Complete o envio no seu aplicativo de email.",
     });
 
     setFormData({ name: "", email: "", message: "" });
