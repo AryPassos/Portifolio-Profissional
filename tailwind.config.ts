@@ -56,6 +56,7 @@ export default {
         neon: "hsl(var(--neon))",
         "glow-primary": "hsl(var(--glow-primary))",
         "glow-accent": "hsl(var(--glow-accent))",
+        charcoal: "hsl(var(--charcoal))",
       },
       borderRadius: {
         lg: "var(--radius)",
