@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Phone, Mail, Linkedin, Send, MapPin } from "lucide-react";
+import { Phone, Mail, Linkedin, Send, MapPin, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const contactInfo = [
@@ -35,39 +35,14 @@ export const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { toast } = useToast();
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setIsSubmitting(true);
-
-    const { name, email, message } = formData;
-    const subject = encodeURIComponent(`Contato do Portfólio - ${name}`);
-    const body = encodeURIComponent(
-      `Nome: ${name}\nEmail: ${email}\n\nMensagem:\n${message}`
-    );
-    
-    window.location.href = `mailto:arypassosj@gmail.com?subject=${subject}&body=${body}`;
-
     toast({
-      title: "Abrindo seu cliente de email...",
-      description: "Complete o envio no seu aplicativo de email.",
+      title: "Enviando mensagem...",
+      description: "Aguarde um momento.",
     });
-
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
   };
 
   return (
@@ -140,26 +115,35 @@ export const ContactSection = () => {
             ))}
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Contact Form - FormSubmit */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form 
+              action="https://formsubmit.co/arypassosj@gmail.com" 
+              method="POST"
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
+              {/* FormSubmit config */}
+              <input type="hidden" name="_subject" value="Nova mensagem do Portfólio" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value={window.location.origin + "/contato?success=true"} />
+              <input type="hidden" name="_template" value="table" />
+              
               <div>
                 <label
-                  htmlFor="name"
+                  htmlFor="nome"
                   className="block text-sm font-medium mb-2"
                 >
                   Nome
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
+                  id="nome"
+                  name="nome"
                   required
                   className="w-full px-4 py-3 rounded-xl glass border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                   placeholder="Seu nome"
@@ -176,8 +160,6 @@ export const ContactSection = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-xl glass border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                   placeholder="seu@email.com"
@@ -185,16 +167,14 @@ export const ContactSection = () => {
               </div>
               <div>
                 <label
-                  htmlFor="message"
+                  htmlFor="mensagem"
                   className="block text-sm font-medium mb-2"
                 >
                   Mensagem
                 </label>
                 <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
+                  id="mensagem"
+                  name="mensagem"
                   required
                   rows={5}
                   className="w-full px-4 py-3 rounded-xl glass border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-none"
