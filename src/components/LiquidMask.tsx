@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import avatarImage from "@/assets/avatar-ary.png";
 
@@ -9,7 +9,7 @@ export const LiquidMask = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const springConfig = { damping: 25, stiffness: 150 };
+  const springConfig = { damping: 30, stiffness: 100 };
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
 
@@ -20,8 +20,9 @@ export const LiquidMask = () => {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    mouseX.set(e.clientX - centerX);
-    mouseY.set(e.clientY - centerY);
+    // Parallax suave - movimento menor
+    mouseX.set((e.clientX - centerX) * 0.05);
+    mouseY.set((e.clientY - centerY) * 0.05);
   };
 
   const handleMouseEnter = () => setIsHovering(true);
@@ -31,168 +32,175 @@ export const LiquidMask = () => {
     mouseY.set(0);
   };
 
-  const [turbulenceSeed, setTurbulenceSeed] = useState(1);
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTurbulenceSeed(prev => (prev % 10) + 1);
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div
       ref={containerRef}
-      className="relative w-80 h-80 md:w-96 md:h-96 cursor-none"
+      className="relative w-80 h-80 md:w-96 md:h-96"
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* SVG Filters */}
+      {/* SVG Filters para fumaça */}
       <svg className="absolute w-0 h-0">
         <defs>
-          {/* Liquid distortion filter */}
-          <filter id="liquid-filter" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="smoke-filter" x="-50%" y="-50%" width="200%" height="200%">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.015"
-              numOctaves="3"
-              seed={turbulenceSeed}
+              baseFrequency="0.008"
+              numOctaves="5"
+              seed="5"
               result="noise"
-            />
+            >
+              <animate
+                attributeName="baseFrequency"
+                values="0.008;0.012;0.008"
+                dur="8s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
-              scale={isHovering ? 30 : 15}
+              scale="40"
               xChannelSelector="R"
               yChannelSelector="G"
             />
+            <feGaussianBlur stdDeviation="3" />
           </filter>
           
-          {/* Glow filter */}
-          <filter id="glow-filter" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="8" result="blur" />
+          <filter id="glow-filter">
+            <feGaussianBlur stdDeviation="10" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-
-          {/* Blob mask shape */}
-          <clipPath id="blob-clip">
-            <motion.ellipse
-              cx="50%"
-              cy="50%"
-              rx="45%"
-              ry="45%"
-              style={{
-                translateX: x,
-                translateY: y,
-              }}
-            />
-          </clipPath>
         </defs>
       </svg>
 
       {/* Background glow */}
       <motion.div
-        className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 via-accent/30 to-primary/40 blur-3xl"
+        className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 via-accent/20 to-primary/30 blur-3xl"
         animate={{
-          scale: isHovering ? 1.2 : 1,
-          opacity: isHovering ? 0.8 : 0.5,
+          scale: isHovering ? 1.15 : 1,
+          opacity: isHovering ? 0.7 : 0.4,
         }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
       />
 
-      {/* Outer liquid border */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{
-          background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)))",
-          filter: "url(#liquid-filter)",
-        }}
-        animate={{
-          scale: isHovering ? 1.05 : 1,
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Borda com gradiente */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary via-accent to-primary p-1">
+        <div className="w-full h-full rounded-full bg-background" />
+      </div>
 
-      {/* Inner container with image */}
+      {/* Container da foto com parallax */}
       <motion.div
         className="absolute inset-2 md:inset-3 rounded-full overflow-hidden"
         style={{
-          filter: "url(#liquid-filter)",
+          x,
+          y,
         }}
       >
-        {/* Liquid overlay effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 mix-blend-overlay z-10"
-          style={{
-            translateX: x,
-            translateY: y,
-          }}
-        />
-        
-        {/* Avatar image */}
-        <motion.img
+        {/* Avatar image - estático */}
+        <img
           src={avatarImage}
           alt="Ary José Passos - Desenvolvedor Web"
           className="w-full h-full object-cover"
-          style={{
-            scale: isHovering ? 1.1 : 1,
-          }}
-          transition={{ duration: 0.4 }}
         />
-        
-        {/* Liquid shine effect */}
+      </motion.div>
+
+      {/* Camada de fumaça 1 - mais densa */}
+      <motion.div
+        className="absolute inset-0 rounded-full overflow-hidden pointer-events-none"
+        style={{ filter: "url(#smoke-filter)" }}
+      >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
-          style={{
-            translateX: x,
-            translateY: y,
+          className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-accent/30"
+          animate={{
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
           }}
         />
       </motion.div>
 
-      {/* Floating particles around the mask */}
-      {[...Array(6)].map((_, i) => (
+      {/* Camada de fumaça 2 - mais leve e em movimento */}
+      <motion.div
+        className="absolute inset-0 rounded-full overflow-hidden pointer-events-none mix-blend-screen"
+        animate={{
+          rotate: [0, 360],
+        }}
+        transition={{
+          duration: 60,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      >
+        <div
+          className="absolute inset-0 bg-gradient-radial from-primary/20 via-transparent to-transparent"
+          style={{ filter: "url(#smoke-filter)" }}
+        />
+      </motion.div>
+
+      {/* Camada de fumaça 3 - partículas flutuantes */}
+      <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-20 h-20 rounded-full bg-gradient-radial from-primary/30 to-transparent blur-xl"
+            style={{
+              left: `${20 + (i % 4) * 20}%`,
+              top: `${20 + Math.floor(i / 4) * 40}%`,
+            }}
+            animate={{
+              x: [0, Math.random() * 30 - 15, 0],
+              y: [0, Math.random() * 30 - 15, 0],
+              opacity: [0.2, 0.4, 0.2],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 2,
+              delay: i * 0.3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Brilho no topo */}
+      <motion.div
+        className="absolute inset-0 rounded-full bg-gradient-to-b from-white/10 via-transparent to-transparent pointer-events-none"
+        animate={{
+          opacity: isHovering ? 0.3 : 0.15,
+        }}
+        transition={{ duration: 0.4 }}
+      />
+
+      {/* Partículas externas */}
+      {[...Array(5)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 rounded-full bg-primary/60"
+          className="absolute w-1.5 h-1.5 rounded-full bg-primary/50"
           style={{
-            left: `${50 + 45 * Math.cos((i * Math.PI * 2) / 6)}%`,
-            top: `${50 + 45 * Math.sin((i * Math.PI * 2) / 6)}%`,
+            left: `${50 + 48 * Math.cos((i * Math.PI * 2) / 5)}%`,
+            top: `${50 + 48 * Math.sin((i * Math.PI * 2) / 5)}%`,
           }}
           animate={{
             scale: [1, 1.5, 1],
-            opacity: [0.4, 0.8, 0.4],
-            x: isHovering ? [0, Math.random() * 10 - 5, 0] : 0,
-            y: isHovering ? [0, Math.random() * 10 - 5, 0] : 0,
+            opacity: [0.3, 0.6, 0.3],
           }}
           transition={{
-            duration: 2,
-            delay: i * 0.2,
+            duration: 2.5,
+            delay: i * 0.4,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
       ))}
-
-      {/* Custom cursor when hovering */}
-      {isHovering && (
-        <motion.div
-          className="pointer-events-none fixed w-8 h-8 rounded-full border-2 border-primary/60 mix-blend-difference z-50"
-          style={{
-            x: x,
-            y: y,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0 }}
-        />
-      )}
     </div>
   );
 };
