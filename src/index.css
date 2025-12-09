@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 270 5% 21%;
+    --background: 0 0% 96%;
+    --foreground: 270 5% 15%;
 
-    --card: 260 4% 21%;
-    --card-foreground: 0 0% 100%;
+    --card: 270 20% 95%;
+    --card-foreground: 270 5% 15%;
 
-    --popover: 260 4% 21%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 270 20% 95%;
+    --popover-foreground: 270 5% 15%;
 
     --primary: 270 91% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 260 4% 21%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 270 15% 88%;
+    --secondary-foreground: 270 5% 15%;
 
-    --muted: 260 4% 28%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 270 10% 90%;
+    --muted-foreground: 270 5% 40%;
 
     --accent: 280 100% 70%;
     --accent-foreground: 0 0% 100%;
@@ -30,8 +30,8 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 260 4% 35%;
-    --input: 260 4% 21%;
+    --border: 270 20% 80%;
+    --input: 270 15% 88%;
     --ring: 270 91% 65%;
 
     --radius: 0.75rem;
@@ -40,8 +40,9 @@
     --glow-primary: 270 91% 65%;
     --glow-accent: 280 100% 70%;
     --neon: 280 100% 75%;
-    --glass: 260 4% 21%;
-    --glass-border: 260 4% 35%;
+    --glass: 270 30% 92%;
+    --glass-border: 270 50% 75%;
+    --nav-bg: 270 20% 20%;
 
     --gradient-start: 270 91% 65%;
     --gradient-end: 280 100% 70%;
@@ -85,6 +86,7 @@
     --neon: 280 100% 80%;
     --glass: 270 30% 10%;
     --glass-border: 270 30% 20%;
+    --nav-bg: 270 30% 8%;
     
     /* Custom gray #353338 */
     --charcoal: 260 4% 21%;
@@ -107,11 +109,24 @@
 
 @layer utilities {
   .glass {
-    @apply bg-glass/60 backdrop-blur-xl border border-glass-border/30;
+    @apply backdrop-blur-xl border;
+    background: linear-gradient(135deg, hsl(var(--glass) / 0.7), hsl(var(--glass) / 0.5));
+    border-color: hsl(var(--glass-border) / 0.5);
+    box-shadow: 0 4px 30px hsl(var(--primary) / 0.1), inset 0 1px 0 hsl(0 0% 100% / 0.1);
   }
 
   .glass-strong {
-    @apply bg-glass/80 backdrop-blur-2xl border border-glass-border/40;
+    @apply backdrop-blur-2xl border;
+    background: linear-gradient(135deg, hsl(var(--glass) / 0.85), hsl(var(--glass) / 0.7));
+    border-color: hsl(var(--glass-border) / 0.6);
+    box-shadow: 0 8px 40px hsl(var(--primary) / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15);
+  }
+
+  .glass-nav {
+    @apply backdrop-blur-2xl border;
+    background: linear-gradient(135deg, hsl(var(--nav-bg) / 0.95), hsl(var(--nav-bg) / 0.85));
+    border-color: hsl(var(--primary) / 0.2);
+    box-shadow: 0 8px 40px hsl(var(--primary) / 0.2);
   }
 
   .glow-primary {

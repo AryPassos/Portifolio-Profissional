@@ -36,8 +36,8 @@ export const Navigation = () => {
       <nav 
         className={`max-w-6xl mx-auto rounded-2xl px-6 py-3 transition-all duration-500 ${
           scrolled 
-            ? "glass-strong shadow-2xl shadow-primary/10 border border-primary/10" 
-            : "glass border border-border/30"
+            ? "glass-nav shadow-2xl shadow-primary/20" 
+            : "glass-nav"
         }`}
       >
         <div className="flex items-center justify-between">

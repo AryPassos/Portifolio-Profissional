@@ -53,6 +53,7 @@ export default {
         },
         glass: "hsl(var(--glass))",
         "glass-border": "hsl(var(--glass-border))",
+        "nav-bg": "hsl(var(--nav-bg))",
         neon: "hsl(var(--neon))",
         "glow-primary": "hsl(var(--glow-primary))",
         "glow-accent": "hsl(var(--glow-accent))",
