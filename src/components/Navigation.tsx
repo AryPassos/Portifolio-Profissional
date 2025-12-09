@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -49,10 +49,10 @@ export const Navigation = () => {
             <Link to="/" className="flex items-center gap-2 group">
               <motion.div
                 className="relative"
-                whileHover={{ rotate: 180 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <Sparkles className="h-5 w-5 text-primary" />
+                <span className="text-lg font-mono font-bold text-primary">&lt;/&gt;</span>
                 <div className="absolute inset-0 bg-primary/30 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
               <span className="text-xl font-bold text-gradient">
