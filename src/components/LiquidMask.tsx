@@ -20,9 +20,9 @@ export const LiquidMask = () => {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    // Parallax suave - movimento menor
-    mouseX.set((e.clientX - centerX) * 0.05);
-    mouseY.set((e.clientY - centerY) * 0.05);
+    // Movimento do glow - mais amplo
+    mouseX.set((e.clientX - centerX) * 0.15);
+    mouseY.set((e.clientY - centerY) * 0.15);
   };
 
   const handleMouseEnter = () => setIsHovering(true);
@@ -78,9 +78,13 @@ export const LiquidMask = () => {
         </defs>
       </svg>
 
-      {/* Background glow */}
+      {/* Background glow - move com o mouse */}
       <motion.div
         className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/30 via-accent/20 to-primary/30 blur-3xl"
+        style={{
+          x,
+          y,
+        }}
         animate={{
           scale: isHovering ? 1.15 : 1,
           opacity: isHovering ? 0.7 : 0.4,
@@ -93,21 +97,14 @@ export const LiquidMask = () => {
         <div className="w-full h-full rounded-full bg-background" />
       </div>
 
-      {/* Container da foto com parallax */}
-      <motion.div
-        className="absolute inset-2 md:inset-3 rounded-full overflow-hidden"
-        style={{
-          x,
-          y,
-        }}
-      >
-        {/* Avatar image - estático */}
+      {/* Container da foto - estático */}
+      <div className="absolute inset-2 md:inset-3 rounded-full overflow-hidden">
         <img
           src={avatarImage}
           alt="Ary José Passos - Desenvolvedor Web"
           className="w-full h-full object-cover"
         />
-      </motion.div>
+      </div>
 
       {/* Camada de fumaça 1 - mais densa */}
       <motion.div
