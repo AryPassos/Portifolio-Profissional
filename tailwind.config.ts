@@ -58,6 +58,11 @@ export default {
         "glow-primary": "hsl(var(--glow-primary))",
         "glow-accent": "hsl(var(--glow-accent))",
         charcoal: "hsl(var(--charcoal))",
+        tag: {
+          DEFAULT: "hsl(var(--tag-bg))",
+          border: "hsl(var(--tag-border))",
+          foreground: "hsl(var(--tag-text))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

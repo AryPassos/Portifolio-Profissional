@@ -128,7 +128,7 @@ export const SkillsSection = () => {
                     <motion.span
                       key={skill}
                       whileHover={{ scale: 1.05 }}
-                      className="px-3 py-1.5 rounded-lg text-sm font-medium bg-secondary text-secondary-foreground hover:bg-primary/20 hover:text-primary transition-colors cursor-default"
+                      className="px-3 py-1.5 rounded-lg text-sm font-medium bg-tag border border-tag-border text-tag-foreground hover:bg-primary/20 hover:text-primary hover:border-primary/40 transition-colors cursor-default"
                     >
                       {skill}
                     </motion.span>
