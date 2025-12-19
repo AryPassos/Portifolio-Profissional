@@ -7,7 +7,7 @@ import avatarImage from "@/assets/avatar-ary.png";
 const highlights = [
   {
     icon: Target,
-    text: "2+ anos desenvolvendo projetos reais",
+    text: "3+ anos desenvolvendo projetos reais",
   },
   {
     icon: Wrench,

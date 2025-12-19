@@ -88,7 +88,7 @@ export const Navigation = () => {
                   <span className={`relative z-10 transition-colors duration-300 ${
                     location.pathname === item.href
                       ? "text-primary font-semibold"
-                      : "text-muted-foreground group-hover:text-foreground"
+                      : "text-white dark:text-muted-foreground group-hover:text-foreground"
                   }`}>
                     {item.label}
                   </span>
